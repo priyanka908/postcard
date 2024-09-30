@@ -1,0 +1,200 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(120deg, #a6c0fe, #f68084); /* Gradient background */
+    font-family: 'Arial', sans-serif;
+}
+
+.postcard {
+    width: 400px;  /* Increased width */
+    height: 250px; /* Increased height */
+    perspective: 1000px;
+    position: relative;
+    margin-top: 50px;
+    transition: transform 3s ease-in-out; /* Slowed down flip effect */
+    border: 3px solid transparent;
+    border-image: linear-gradient(45deg, #ff00ff, #00ffff);
+    border-image-slice: 1; /* Neon border */
+    background: linear-gradient(120deg, #000, #222); /* Black shiny postcard */
+    background-size: 300% 300%; /* For dynamic color shifting */
+    animation: gradientShift 5s ease infinite; /* Dynamic color shift */
+    animation: float 4s ease-in-out infinite; /* Floating effect */
+    cursor: url('custom-cursor.png'), auto; /* Custom cursor */
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); /* Subtle glow */
+    transform: translateZ(0); /* Ensures hardware acceleration for smooth animations */
+}
+
+/* Front and Back */
+.front, .back {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    transition: transform 3s ease-in-out, box-shadow 3s ease; /* Slowed down flip effect */
+    text-align: center;
+    font-size: 18px;
+    color: #fff;
+    overflow: hidden;
+}
+
+.back {
+    transform: rotateY(180deg); /* Back flip rotation */
+}
+
+/* Flip effect */
+.postcard:hover .front {
+    transform: rotateY(180deg);
+}
+
+.postcard:hover .back {
+    transform: rotateY(360deg); /* Flip back */
+}
+
+/* Shiny effect on hover */
+.front::before, .back::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 20px);
+    height: calc(100% + 20px);
+    border-radius: 12px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0) 40%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.postcard:hover .front::before, .postcard:hover .back::before {
+    opacity: 1;
+}
+
+.postcard::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        75deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.postcard:hover::after {
+    opacity: 1;
+    animation: shine 2s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0% {
+        background-position: -200%;
+    }
+    100% {
+        background-position: 200%;
+    }
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+/* Subtle Sparkle Effect */
+.sparkle {
+    position: relative;
+    overflow: hidden;
+}
+
+.sparkle::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 20%, transparent 30%);
+    opacity: 0;
+    animation: sparkle-animation 2s infinite;
+}
+
+@keyframes sparkle-animation {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.6; }
+}
+
+/* Hidden interactive content on hover */
+.hidden-message {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.postcard:hover .hidden-message {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Floating effect */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Dynamic color shift */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* Pop-up content */
+.popup {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    font-size: 12px;
+    display: none;
+}
+
+.postcard:hover .popup {
+    display: block;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
